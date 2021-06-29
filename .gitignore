@@ -21,6 +21,7 @@ data/VTON
 data/gdrive-linux-64
 checkpoint/
 extracted_features/
+data/*
 
 *.pyc
 # *.png
