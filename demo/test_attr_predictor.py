@@ -10,6 +10,7 @@ from mmfashion.models import build_predictor
 from mmfashion.utils import get_img_tensor
 
 
+# attribute predictor, Landmark Resnet
 def parse_args():
     parser = argparse.ArgumentParser(
         description='MMFashion Attribute Prediction Demo')
@@ -22,11 +23,11 @@ def parse_args():
         '--checkpoint',
         type=str,
         help='checkpoint file',
-        default='checkpoint/Predict/vgg/global/latest.pth')
+        default='checkpoint/AttrPredict/resnet/landmark/latest.pth')
     parser.add_argument(
         '--config',
         help='test config file path',
-        default='configs/attribute_predict/global_predictor_vgg_attr.py')
+        default='configs/attribute_predict/roi_predictor_resnet_attr.py')
     parser.add_argument(
         '--use_cuda', type=bool, default=True, help='use gpu or not')
     args = parser.parse_args()
@@ -42,7 +43,11 @@ def main():
     # just set a default value
     landmark_tensor = torch.zeros(8)
     cfg.model.pretrained = None
+
+    # model load
     model = build_predictor(cfg.model)
+
+    # checkpoint load
     load_checkpoint(model, args.checkpoint, map_location='cpu')
     if args.use_cuda:
         model.cuda()
